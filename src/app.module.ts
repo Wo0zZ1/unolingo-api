@@ -4,6 +4,12 @@ import { JwtModule } from '@nestjs/jwt'
 
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
+import { LanguagesModule } from './languages/languages.module';
+import { SectionsModule } from './sections/sections.module';
+import { LevelsModule } from './levels/levels.module';
+import { TasksModule } from './tasks/tasks.module';
+import { ProgressModule } from './progress/progress.module';
+import { TheoryModule } from './theory/theory.module';
 
 @Module({
 	imports: [
@@ -19,6 +25,12 @@ import { UsersModule } from './users/users.module'
 		}),
 		AuthModule,
 		UsersModule,
+		LanguagesModule,
+		SectionsModule,
+		LevelsModule,
+		TasksModule,
+		ProgressModule,
+		TheoryModule,
 	],
 	controllers: [],
 	providers: [],

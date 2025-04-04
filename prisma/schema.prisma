@@ -8,8 +8,92 @@ datasource db {
 }
 
 model User {
-  id        Int      @id() @default(autoincrement())
-  username  String   @unique()
+  id        Int            @id() @default(autoincrement())
+  username  String         @unique()
   password  String
+  progress  UserProgress[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model UserProgress {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            Int
+  language          Language @relation(fields: [languageId], references: [id])
+  languageId        Int
+  lastUnlockedLevel Int      @default(1) // последний доступный уровень
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, languageId]) // один прогресс на пользователя и язык
+}
+
+model Language {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique
+  code         String         @unique // например "en", "es", "ru"
+  flagIcon     String? // ссылка на иконку флага
+  sections     Section[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  UserProgress UserProgress[]
+}
+
+model Section {
+  id         Int      @id @default(autoincrement())
+  order      Int // порядковый номер секции (1, 2, 3...)
+  name       String
+  language   Language @relation(fields: [languageId], references: [id])
+  languageId Int
+  levels     Level[]
+  theory     Theory?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([languageId, order]) // гарантируем уникальность порядка в рамках языка
+}
+
+model Level {
+  id        Int      @id @default(autoincrement())
+  order     Int // порядковый номер уровня в секции (1-5)
+  section   Section  @relation(fields: [sectionId], references: [id])
+  sectionId Int
+  tasks     Task[] // теперь храним задачи отдельной таблицей
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sectionId, order]) // гарантируем уникальность порядка в рамках секции
+}
+
+model Task {
+  id            Int      @id @default(autoincrement())
+  level         Level    @relation(fields: [levelId], references: [id])
+  levelId       Int
+  type          TaskType // тип задания (wordPicker или textInput)
+  question      String // вопрос
+  correctAnswer String // правильный ответ
+  options       String[] // для wordPicker - варианты ответов
+  partialAnswer String[] // для textInput - частичные ответы
+  order         Int // порядок задания в уровне
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([levelId, order]) // уникальность порядка в рамках уровня
+}
+
+enum TaskType {
+  WORD_PICKER
+  TEXT_INPUT
+}
+
+model Theory {
+  id         Int      @id @default(autoincrement())
+  section    Section  @relation(fields: [sectionId], references: [id])
+  sectionId  Int      @unique
+  title      String
+  paragraphs String[] // массив абзацев
+  examples   Json? // дополнительные примеры (может быть null)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
