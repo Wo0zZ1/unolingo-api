@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProgressService } from './progress.service';
-import { CreateProgressDto } from './dto/create-progress.dto';
-import { UpdateProgressDto } from './dto/update-progress.dto';
+import { Controller, Get, Param, ParseIntPipe, Post, Logger, UseGuards } from '@nestjs/common'
+
+import { CurrentUser, IUserJwtPayload } from 'src/users/current-user.decorator'
+import { ProgressService } from './progress.service'
+
+import { AuthGuard } from 'src/auth/auth.guard'
 
 @Controller('progress')
 export class ProgressController {
-  constructor(private readonly progressService: ProgressService) {}
+	constructor(private readonly progressService: ProgressService) {}
 
-  @Post()
-  create(@Body() createProgressDto: CreateProgressDto) {
-    return this.progressService.create(createProgressDto);
-  }
+	logger = new Logger()
 
-  @Get()
-  findAll() {
-    return this.progressService.findAll();
-  }
+	@Post(':languageId')
+	@UseGuards(AuthGuard)
+	async createProgress(
+		@CurrentUser() userPayload: IUserJwtPayload,
+		@Param('languageId', ParseIntPipe) languageId: number,
+	) {
+		this.logger.log('progress createProgress')
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.progressService.findOne(+id);
-  }
+		return await this.progressService.createProgress({
+			userId: userPayload.id,
+			languageId: languageId,
+		})
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProgressDto: UpdateProgressDto) {
-    return this.progressService.update(+id, updateProgressDto);
-  }
+	@Get()
+	@UseGuards(AuthGuard)
+	async getProgresses(@CurrentUser() userPayload: IUserJwtPayload) {
+		this.logger.log('progress getProgresses')
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.progressService.remove(+id);
-  }
+		return await this.progressService.getProgresses(userPayload.id)
+	}
+
+	@Get(':languageId')
+	@UseGuards(AuthGuard)
+	async getProgressByLanguageId(
+		@CurrentUser() userPayload: IUserJwtPayload,
+		@Param('languageId', ParseIntPipe) languageId: number,
+	) {
+		this.logger.log('progress/:languageId getProgressByLanguageId')
+
+		return await this.progressService.getProgress(userPayload.id, languageId)
+	}
 }

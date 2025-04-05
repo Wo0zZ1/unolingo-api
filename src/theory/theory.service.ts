@@ -1,26 +1,108 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTheoryDto } from './dto/create-theory.dto';
-import { UpdateTheoryDto } from './dto/update-theory.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+
+import { PrismaService } from 'src/prisma.service'
+
+import { CreateTheoryDto, UpdateTheoryDto } from './dto'
+import { Theory } from './entities'
 
 @Injectable()
 export class TheoryService {
-  create(createTheoryDto: CreateTheoryDto) {
-    return 'This action adds a new theory';
-  }
+	constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all theory`;
-  }
+	async create(createTheoryDto: CreateTheoryDto): Promise<Theory> {
+		try {
+			return await this.prisma.theory.create({ data: createTheoryDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} theory`;
-  }
+	async getAll(): Promise<Theory[]> {
+		try {
+			return await this.prisma.theory.findMany()
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  update(id: number, updateTheoryDto: UpdateTheoryDto) {
-    return `This action updates a #${id} theory`;
-  }
+	async getById(id: number): Promise<Theory | null> {
+		try {
+			return await this.prisma.theory.findUnique({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} theory`;
-  }
+	async getBySectionId(sectionId: number): Promise<Theory | null> {
+		try {
+			return await this.prisma.theory.findUnique({ where: { sectionId } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateById(id: number, updateTheoryDto: UpdateTheoryDto): Promise<Theory> {
+		try {
+			return await this.prisma.theory.update({ where: { id }, data: updateTheoryDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateBySectionId(sectionId: number, updateTheoryDto: UpdateTheoryDto): Promise<Theory> {
+		try {
+			return await this.prisma.theory.update({ where: { sectionId }, data: updateTheoryDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async deleteById(id: number): Promise<Theory> {
+		try {
+			return await this.prisma.theory.delete({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async deleteBySectionId(sectionId: number): Promise<Theory> {
+		try {
+			return await this.prisma.theory.delete({ where: { sectionId } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 }

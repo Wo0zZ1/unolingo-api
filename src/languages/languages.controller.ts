@@ -1,34 +1,62 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LanguagesService } from './languages.service';
-import { CreateLanguageDto } from './dto/create-language.dto';
-import { UpdateLanguageDto } from './dto/update-language.dto';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	Logger,
+	ParseIntPipe,
+	NotFoundException,
+} from '@nestjs/common'
+
+import { LanguagesService } from './languages.service'
+import { CreateLanguageDto, UpdateLanguageDto } from './dto'
 
 @Controller('languages')
 export class LanguagesController {
-  constructor(private readonly languagesService: LanguagesService) {}
+	constructor(private readonly languagesService: LanguagesService) {}
 
-  @Post()
-  create(@Body() createLanguageDto: CreateLanguageDto) {
-    return this.languagesService.create(createLanguageDto);
-  }
+	logger = new Logger()
 
-  @Get()
-  findAll() {
-    return this.languagesService.findAll();
-  }
+	@Post()
+	async createLanguage(@Body() createLanguageDto: CreateLanguageDto) {
+		this.logger.log('languages createLanguage')
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.languagesService.findOne(+id);
-  }
+		return await this.languagesService.createLanguage(createLanguageDto)
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLanguageDto: UpdateLanguageDto) {
-    return this.languagesService.update(+id, updateLanguageDto);
-  }
+	@Get()
+	async getLanguages() {
+		this.logger.log('languages getLanguages')
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.languagesService.remove(+id);
-  }
+		return await this.languagesService.getLanguages()
+	}
+
+	@Get(':id')
+	async getLanguage(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('languages/:id getLanguage')
+
+		const language = await this.languagesService.getLanguage(id)
+		if (!language) throw new NotFoundException()
+		return language
+	}
+
+	@Patch(':id')
+	async updateLanguage(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() updateLanguageDto: UpdateLanguageDto,
+	) {
+		this.logger.log('languages/:id updateLanguage')
+
+		return await this.languagesService.updateLanguage(id, updateLanguageDto)
+	}
+
+	@Delete(':id')
+	async deleteLanguage(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('languages/:id deleteLanguage')
+
+		return await this.languagesService.deleteLanguage(id)
+	}
 }

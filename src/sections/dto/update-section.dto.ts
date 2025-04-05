@@ -1,4 +1,15 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateSectionDto } from './create-section.dto';
+import { IsNumber, IsOptional, IsString } from 'class-validator'
 
-export class UpdateSectionDto extends PartialType(CreateSectionDto) {}
+export class UpdateSectionDto {
+	@IsOptional()
+	@IsNumber()
+	order?: number
+
+	@IsOptional()
+	@IsString()
+	name?: string
+
+	@IsOptional()
+	@IsNumber()
+	languageId?: number
+}

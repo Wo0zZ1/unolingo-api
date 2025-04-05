@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LevelsService } from './levels.service';
-import { CreateLevelDto } from './dto/create-level.dto';
-import { UpdateLevelDto } from './dto/update-level.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common'
+import { LevelsService } from './levels.service'
+import { CreateLevelDto } from './dto/create-level.dto'
+import { UpdateLevelDto } from './dto/update-level.dto'
 
 @Controller('levels')
 export class LevelsController {
-  constructor(private readonly levelsService: LevelsService) {}
+	constructor(private readonly levelsService: LevelsService) {}
 
-  @Post()
-  create(@Body() createLevelDto: CreateLevelDto) {
-    return this.levelsService.create(createLevelDto);
-  }
+	@Post()
+	createLevel(@Body() createLevelDto: CreateLevelDto) {
+		// return this.levelsService.create(createLevelDto)
+	}
 
-  @Get()
-  findAll() {
-    return this.levelsService.findAll();
-  }
+	@Get('/section/:sectionId')
+	getLevels(@Param('sectionId', ParseIntPipe) id: number) {
+		// return this.levelsService.findAll()
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.levelsService.findOne(+id);
-  }
+	@Get(':id')
+	getLevel(@Param('id', ParseIntPipe) id: number) {
+		// return this.levelsService.findOne(id)
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLevelDto: UpdateLevelDto) {
-    return this.levelsService.update(+id, updateLevelDto);
-  }
+	@Patch(':id')
+	updateLevel(@Param('id', ParseIntPipe) id: number, @Body() updateLevelDto: UpdateLevelDto) {
+		// return this.levelsService.update(id, updateLevelDto)
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.levelsService.remove(+id);
-  }
+	@Delete(':id')
+	deleteLevel(@Param('id', ParseIntPipe) id: number) {
+		// return this.levelsService.remove(id)
+	}
 }

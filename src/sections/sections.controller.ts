@@ -1,34 +1,107 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SectionsService } from './sections.service';
-import { CreateSectionDto } from './dto/create-section.dto';
-import { UpdateSectionDto } from './dto/update-section.dto';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	ParseIntPipe,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common'
+
+import { SectionsService } from './sections.service'
+
+import { CreateSectionDto, UpdateSectionDto } from './dto'
 
 @Controller('sections')
 export class SectionsController {
-  constructor(private readonly sectionsService: SectionsService) {}
+	constructor(private readonly sectionsService: SectionsService) {}
 
-  @Post()
-  create(@Body() createSectionDto: CreateSectionDto) {
-    return this.sectionsService.create(createSectionDto);
-  }
+	logger = new Logger()
 
-  @Get()
-  findAll() {
-    return this.sectionsService.findAll();
-  }
+	@Post()
+	async create(@Body() createSectionDto: CreateSectionDto) {
+		this.logger.log('sections create')
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sectionsService.findOne(+id);
-  }
+		return await this.sectionsService.create(createSectionDto)
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSectionDto: UpdateSectionDto) {
-    return this.sectionsService.update(+id, updateSectionDto);
-  }
+	@Get()
+	async getAll() {
+		this.logger.log('sections getAll')
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sectionsService.remove(+id);
-  }
+		return await this.sectionsService.getAll()
+	}
+
+	@Get(':id')
+	async getById(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('sections/:id getById')
+
+		const section = await this.sectionsService.getById(id)
+		if (!section) throw new NotFoundException()
+		return section
+	}
+
+	@Get('/language/:languageId')
+	async getAllByLanguageId(@Param('languageId', ParseIntPipe) languageId: number) {
+		this.logger.log('sections/language/:languageId getAllByLanguageId')
+
+		return await this.sectionsService.getAllByLanguageId(languageId)
+	}
+
+	@Get('/language/:languageId/:order')
+	async getByLanguageIdAndOrder(
+		@Param('languageId', ParseIntPipe) languageId: number,
+		@Param('order', ParseIntPipe) order: number,
+	) {
+		this.logger.log('sections/language/:languageId/:order getByLanguageIdAndOrder')
+
+		const section = await this.sectionsService.getByLanguageIdAndOrder(languageId, order)
+		if (!section) throw new NotFoundException()
+		return section
+	}
+
+	@Patch(':id')
+	async updateById(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() updateSectionDto: UpdateSectionDto,
+	) {
+		this.logger.log('sections/:id updateById')
+
+		return await this.sectionsService.updateById(id, updateSectionDto)
+	}
+
+	@Patch('/language/:languageId/:order')
+	async updateByLanguageIdAndOrder(
+		@Param('languageId', ParseIntPipe) languageId: number,
+		@Param('order', ParseIntPipe) order: number,
+		@Body() updateSectionDto: UpdateSectionDto,
+	) {
+		this.logger.log('sections/language/:languageId/:order updateByLanguageIdAndOrder')
+
+		return await this.sectionsService.updateByLanguageIdAndOrder(
+			languageId,
+			order,
+			updateSectionDto,
+		)
+	}
+
+	@Delete(':id')
+	async deleteById(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('sections/:id deleteById')
+
+		return await this.sectionsService.deleteById(id)
+	}
+
+	@Delete('/language/:languageId/:order')
+	async deleteByLanguageIdAndOrder(
+		@Param('languageId', ParseIntPipe) languageId: number,
+		@Param('order', ParseIntPipe) order: number,
+	) {
+		this.logger.log('sections/language/:languageId/:order deleteByLanguageIdAndOrder')
+
+		return await this.sectionsService.deleteByLanguageIdAndOrder(languageId, order)
+	}
 }

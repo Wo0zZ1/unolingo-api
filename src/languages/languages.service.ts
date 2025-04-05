@@ -1,26 +1,75 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLanguageDto } from './dto/create-language.dto';
-import { UpdateLanguageDto } from './dto/update-language.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+
+import { PrismaService } from 'src/prisma.service'
+
+import { CreateLanguageDto, UpdateLanguageDto } from './dto'
+import { Language } from './entities'
 
 @Injectable()
 export class LanguagesService {
-  create(createLanguageDto: CreateLanguageDto) {
-    return 'This action adds a new language';
-  }
+	constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all languages`;
-  }
+	async createLanguage(createLanguageDto: CreateLanguageDto): Promise<Language> {
+		try {
+			return await this.prisma.language.create({ data: createLanguageDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} language`;
-  }
+	async getLanguages(): Promise<Language[]> {
+		try {
+			return await this.prisma.language.findMany()
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  update(id: number, updateLanguageDto: UpdateLanguageDto) {
-    return `This action updates a #${id} language`;
-  }
+	async getLanguage(id: number): Promise<Language | null> {
+		try {
+			return await this.prisma.language.findUnique({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} language`;
-  }
+	async updateLanguage(id: number, updateLanguageDto: UpdateLanguageDto): Promise<Language> {
+		try {
+			return await this.prisma.language.update({
+				where: { id },
+				data: updateLanguageDto,
+			})
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async deleteLanguage(id: number): Promise<Language> {
+		try {
+			return await this.prisma.language.delete({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 }

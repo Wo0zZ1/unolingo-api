@@ -20,10 +20,13 @@ export class UsersService {
 				createUserDto.password,
 				+this.configService.getOrThrow<string>('SALT'),
 			)
-			return await this.prisma.user.create({
-				data: { ...createUserDto, password: hashPassword },
+
+			const user = await this.prisma.user.create({
+				data: { ...createUserDto, password: hashPassword, userStat: { create: {} } },
 				omit: { password: true },
 			})
+
+			return user
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
 				throw new ConflictException()

@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
-import { LanguagesService } from './languages.service';
-import { LanguagesController } from './languages.controller';
+import { Module } from '@nestjs/common'
+
+import { PrismaService } from 'src/prisma.service'
+
+import { LanguagesService } from './languages.service'
+import { LanguagesController } from './languages.controller'
 
 @Module({
-  controllers: [LanguagesController],
-  providers: [LanguagesService],
+	controllers: [LanguagesController],
+	providers: [PrismaService, LanguagesService],
 })
 export class LanguagesModule {}

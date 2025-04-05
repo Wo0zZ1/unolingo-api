@@ -1,26 +1,115 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+
+import { PrismaService } from 'src/prisma.service'
+
+import { CreateTaskDto, UpdateTaskDto } from './dto'
+import { Task } from './entities'
 
 @Injectable()
 export class TasksService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
-  }
+	constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all tasks`;
-  }
+	async create(createTaskDto: CreateTaskDto): Promise<Task> {
+		try {
+			return await this.prisma.task.create({ data: createTaskDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
-  }
+	async getAll(): Promise<Task[]> {
+		try {
+			return await this.prisma.task.findMany()
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
-  }
+	async getById(id: number): Promise<Task | null> {
+		try {
+			return await this.prisma.task.findUnique({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
-  }
+	async getAllByLevelId(levelId: number): Promise<Task[] | null> {
+		try {
+			return await this.prisma.task.findMany({ where: { levelId } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async getByLevelIdAndOrder(levelId: number, order: number): Promise<Task | null> {
+		try {
+			return await this.prisma.task.findUnique({ where: { levelId_order: { levelId, order } } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateById(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+		try {
+			return await this.prisma.task.update({ where: { id }, data: updateTaskDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateByLevelIdAndOrder(
+		levelId: number,
+		order: number,
+		updateTaskDto: UpdateTaskDto,
+	): Promise<Task> {
+		try {
+			return await this.prisma.task.update({
+				where: { levelId_order: { levelId, order } },
+				data: updateTaskDto,
+			})
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async delete(id: number): Promise<Task> {
+		try {
+			return await this.prisma.task.delete({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 }

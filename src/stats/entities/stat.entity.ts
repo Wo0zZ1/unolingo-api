@@ -1,6 +1,6 @@
 import { IsDateString, IsNumber } from 'class-validator'
 
-export class Progress {
+export class Stat {
 	@IsNumber()
 	id: number
 
@@ -8,14 +8,17 @@ export class Progress {
 	userId: number
 
 	@IsNumber()
-	languageId: number
+	level: number
 
 	@IsNumber()
-	lastUnlockedLevel: number
+	currentExp: number
+
+	@IsNumber()
+	totalExp: number
+
+	@IsNumber()
+	streakDays: number
 
 	@IsDateString()
-	createdAt: Date
-
-	@IsDateString()
-	updatedAt: Date
+	lastActive: Date
 }

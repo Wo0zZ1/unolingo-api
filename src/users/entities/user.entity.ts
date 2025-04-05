@@ -12,4 +12,7 @@ export class User {
 
 	@IsDateString()
 	createdAt: Date
+
+	@IsDateString()
+	updatedAt: Date
 }
