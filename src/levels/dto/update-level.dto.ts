@@ -1,4 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateLevelDto } from './create-level.dto';
+import { IsNumber, IsOptional } from 'class-validator'
 
-export class UpdateLevelDto extends PartialType(CreateLevelDto) {}
+export class UpdateLevelDto {
+	@IsOptional()
+	@IsNumber()
+	order?: number
+
+	@IsOptional()
+	@IsNumber()
+	sectionId?: number
+}

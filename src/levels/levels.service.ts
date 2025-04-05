@@ -1,26 +1,129 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLevelDto } from './dto/create-level.dto';
-import { UpdateLevelDto } from './dto/update-level.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+
+import { PrismaService } from 'src/prisma.service'
+
+import { CreateLevelDto, UpdateLevelDto } from './dto'
+import { Level } from './entities'
 
 @Injectable()
 export class LevelsService {
-  create(createLevelDto: CreateLevelDto) {
-    return 'This action adds a new level';
-  }
+	constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all levels`;
-  }
+	async create(createLevelDto: CreateLevelDto): Promise<Level> {
+		try {
+			return await this.prisma.level.create({ data: createLevelDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} level`;
-  }
+	async getAll(): Promise<Level[]> {
+		try {
+			return await this.prisma.level.findMany()
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  update(id: number, updateLevelDto: UpdateLevelDto) {
-    return `This action updates a #${id} level`;
-  }
+	async getBySectionId(sectionId: number): Promise<Level[]> {
+		try {
+			return await this.prisma.level.findMany({ where: { sectionId } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} level`;
-  }
+	async getById(id: number): Promise<Level | null> {
+		try {
+			return await this.prisma.level.findUnique({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async getBySectionIdAndOrder(sectionId: number, order: number): Promise<Level | null> {
+		try {
+			return await this.prisma.level.findUnique({
+				where: { sectionId_order: { sectionId, order } },
+			})
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateById(id: number, updateLevelDto: UpdateLevelDto): Promise<Level> {
+		try {
+			return await this.prisma.level.update({ where: { id }, data: updateLevelDto })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async updateBySectionIdAndOrder(
+		sectionId: number,
+		order: number,
+		updateLevelDto: UpdateLevelDto,
+	): Promise<Level> {
+		try {
+			return await this.prisma.level.update({
+				where: { sectionId_order: { sectionId, order } },
+				data: updateLevelDto,
+			})
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async deleteById(id: number): Promise<Level> {
+		try {
+			return await this.prisma.level.delete({ where: { id } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
+	async deleteBySectionIdAndOrder(sectionId: number, order: number): Promise<Level> {
+		try {
+			return await this.prisma.level.delete({ where: { sectionId_order: { sectionId, order } } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
 }
