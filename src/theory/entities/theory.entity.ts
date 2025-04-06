@@ -1,4 +1,4 @@
-import { IsDateString, IsJSON, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsDateString, IsJSON, IsNumber, IsString } from 'class-validator'
 import { JsonValue } from '@prisma/client/runtime/library'
 
 export class Theory {
@@ -11,12 +11,8 @@ export class Theory {
 	@IsString()
 	title: string
 
-	@IsString({ each: true })
-	paragraphs: string[]
-
-	@IsOptional()
-	@IsJSON()
-	examples?: JsonValue
+	@IsJSON({ each: true })
+	paragraphs: JsonValue[]
 
 	@IsDateString()
 	createdAt: Date

@@ -3,16 +3,16 @@ import { Prisma } from '@prisma/client'
 
 import { PrismaService } from 'src/prisma.service'
 
-import { CreateLevelDto, UpdateLevelDto } from './dto'
+import { UpdateLevelDto } from './dto'
 import { Level } from './entities'
 
 @Injectable()
 export class LevelsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	async create(createLevelDto: CreateLevelDto): Promise<Level> {
+	async create(sectionId: number, order: number): Promise<Level> {
 		try {
-			return await this.prisma.level.create({ data: createLevelDto })
+			return await this.prisma.level.create({ data: { sectionId, order } })
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()

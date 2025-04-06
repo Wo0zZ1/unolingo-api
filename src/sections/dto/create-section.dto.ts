@@ -1,14 +1,14 @@
 import { IsNumber, IsString } from 'class-validator'
 
-export class CreateSectionDtoWithoutLanguageId {
-	@IsNumber()
-	order: number
-
+export class CreateSectionDtoWithoutLanguageIdAndOrder {
 	@IsString()
 	name: string
 }
 
-export class CreateSectionDto extends CreateSectionDtoWithoutLanguageId {
+export class CreateSectionDto extends CreateSectionDtoWithoutLanguageIdAndOrder {
 	@IsNumber()
 	languageId: number
+
+	@IsNumber()
+	order: number
 }

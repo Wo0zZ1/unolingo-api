@@ -13,7 +13,7 @@ import {
 
 import { TasksService } from './tasks.service'
 
-import { CreateTaskDto, UpdateTaskDto } from './dto/'
+import { CreateTaskDtoWithoutLevelIdAndOrder, UpdateTaskDto } from './dto/'
 
 @Controller('tasks')
 export class TasksController {
@@ -21,11 +21,19 @@ export class TasksController {
 
 	logger = new Logger()
 
-	@Post()
-	async createTask(@Body() createTaskDto: CreateTaskDto) {
+	@Post('/level/:levelId/:order')
+	async createTask(
+		@Param('levelId', ParseIntPipe) levelId: number,
+		@Param('order', ParseIntPipe) order: number,
+		@Body() createTaskDtoWithoutLevelIdAndOrder: CreateTaskDtoWithoutLevelIdAndOrder,
+	) {
 		this.logger.log('tasks createTask')
 
-		return await this.tasksService.create(createTaskDto)
+		return await this.tasksService.create({
+			...createTaskDtoWithoutLevelIdAndOrder,
+			levelId,
+			order,
+		})
 	}
 
 	@Get()

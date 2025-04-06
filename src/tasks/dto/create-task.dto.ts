@@ -1,14 +1,8 @@
-import { IsNumber, IsIn, IsString } from 'class-validator'
+import { IsNumber, IsIn, IsString, IsOptional } from 'class-validator'
 
 import { TTaskType } from '../entities/task.entity'
 
-export class CreateTaskDto {
-	@IsNumber()
-	order: number
-
-	@IsNumber()
-	levelId: number
-
+export class CreateTaskDtoWithoutLevelIdAndOrder {
 	@IsIn(['WORD_PICKER', 'TEXT_INPUT'])
 	type: TTaskType
 
@@ -18,9 +12,19 @@ export class CreateTaskDto {
 	@IsString()
 	correctAnswer: string
 
+	@IsOptional()
 	@IsString({ each: true })
-	partialAnswer: string[]
+	partialAnswer?: string[]
 
+	@IsOptional()
 	@IsString({ each: true })
-	options: string[]
+	options?: string[]
+}
+
+export class CreateTaskDto extends CreateTaskDtoWithoutLevelIdAndOrder {
+	@IsNumber()
+	order: number
+
+	@IsNumber()
+	levelId: number
 }

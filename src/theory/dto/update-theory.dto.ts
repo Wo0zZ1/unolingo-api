@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsJSON } from 'class-validator'
+import { IsString, IsOptional, IsJSON, IsObject } from 'class-validator'
 import { InputJsonValue } from '@prisma/client/runtime/library'
 
 export class UpdateTheoryDto {
@@ -7,8 +7,8 @@ export class UpdateTheoryDto {
 	title?: string
 
 	@IsOptional()
-	@IsString({ each: true })
-	paragraphs?: string[]
+	@IsObject({ each: true })
+	paragraphs?: InputJsonValue[]
 
 	@IsOptional()
 	@IsJSON()

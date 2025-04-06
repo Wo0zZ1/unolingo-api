@@ -13,7 +13,7 @@ import {
 
 import { SectionsService } from './sections.service'
 
-import { CreateSectionDtoWithoutLanguageId, UpdateSectionDto } from './dto'
+import { CreateSectionDtoWithoutLanguageIdAndOrder, UpdateSectionDto } from './dto'
 
 @Controller('sections')
 export class SectionsController {
@@ -21,14 +21,15 @@ export class SectionsController {
 
 	logger = new Logger()
 
-	@Post('/language/:languageId')
+	@Post('/language/:languageId/:order')
 	async create(
-		@Body() createSectionDto: CreateSectionDtoWithoutLanguageId,
 		@Param('languageId', ParseIntPipe) languageId: number,
+		@Param('order', ParseIntPipe) order: number,
+		@Body() createSectionDto: CreateSectionDtoWithoutLanguageIdAndOrder,
 	) {
 		this.logger.log('sections/language/:languageId create')
 
-		return await this.sectionsService.create({ ...createSectionDto, languageId })
+		return await this.sectionsService.create({ ...createSectionDto, languageId, order })
 	}
 
 	@Get()

@@ -13,7 +13,7 @@ import {
 
 import { LevelsService } from './levels.service'
 
-import { CreateLevelDto, UpdateLevelDto } from './dto'
+import { UpdateLevelDto } from './dto'
 import { Level } from './entities'
 
 @Controller('levels')
@@ -22,11 +22,14 @@ export class LevelsController {
 
 	logger = new Logger()
 
-	@Post()
-	async createLevel(@Body() createLevelDto: CreateLevelDto) {
+	@Post('/section/:sectionId/:order')
+	async createLevel(
+		@Param('sectionId', ParseIntPipe) sectionId: number,
+		@Param('order', ParseIntPipe) order: number,
+	) {
 		this.logger.log('levels createLevel')
 
-		return await this.levelsService.create(createLevelDto)
+		return await this.levelsService.create(sectionId, order)
 	}
 
 	@Get()
@@ -48,7 +51,7 @@ export class LevelsController {
 	@Get('/section/:sectionId/:order')
 	async getLevelBySectionIdAndOrder(
 		@Param('sectionId', ParseIntPipe) sectionId: number,
-		@Param('sectionId', ParseIntPipe) order: number,
+		@Param('order', ParseIntPipe) order: number,
 	): Promise<Level> {
 		this.logger.log('levels/section/:sectionId/:order getLevelBySectionIdAndOrder')
 
@@ -79,7 +82,7 @@ export class LevelsController {
 	@Patch('/section/:sectionId/:order')
 	async updateLevelBySectionIdAndOrder(
 		@Param('sectionId', ParseIntPipe) sectionId: number,
-		@Param('sectionId', ParseIntPipe) order: number,
+		@Param('order', ParseIntPipe) order: number,
 		@Body() updateLevelDto: UpdateLevelDto,
 	): Promise<Level> {
 		this.logger.log('levels/section/:sectionId/:order updateLevelBySectionIdAndOrder')
@@ -97,7 +100,7 @@ export class LevelsController {
 	@Delete('/section/:sectionId/:order')
 	async deleteLevelBySectionIdAndOrder(
 		@Param('sectionId', ParseIntPipe) sectionId: number,
-		@Param('sectionId', ParseIntPipe) order: number,
+		@Param('order', ParseIntPipe) order: number,
 	): Promise<Level> {
 		this.logger.log('levels/section/:sectionId/:order deleteLevelBySectionIdAndOrder')
 

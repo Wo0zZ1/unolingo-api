@@ -37,7 +37,7 @@ export class TheoryController {
 	}
 
 	@Get('/section/:sectionId')
-	async getTheoryBySectionId(@Param('id', ParseIntPipe) sectionId: number) {
+	async getTheoryBySectionId(@Param('sectionId', ParseIntPipe) sectionId: number) {
 		this.logger.log('theory/section/:sectionId getTheoryBySectionId')
 
 		const theory = await this.theoryService.getBySectionId(sectionId)
