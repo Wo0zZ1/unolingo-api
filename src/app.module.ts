@@ -1,4 +1,4 @@
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
@@ -17,15 +17,7 @@ import { StatsModule } from './stats/stats.module'
 @Module({
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true }),
-		JwtModule.registerAsync({
-			imports: [ConfigModule],
-			useFactory: (config: ConfigService) => ({
-				secret: config.getOrThrow<string>('JWT_SECRET'),
-				signOptions: { expiresIn: '90s' },
-			}),
-			global: true,
-			inject: [ConfigService],
-		}),
+		JwtModule.register({ global: true }),
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, '..', 'public'),
 		}),

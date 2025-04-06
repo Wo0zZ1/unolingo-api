@@ -1,8 +1,22 @@
-import { Body, Controller, HttpCode, HttpStatus, Logger, Post, UseGuards } from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	HttpCode,
+	HttpStatus,
+	Logger,
+	Post,
+	Req,
+	Res,
+	UseGuards,
+} from '@nestjs/common'
+import { Request, Response } from 'express'
 
 import { AuthService } from './auth.service'
-import { CreateUserDto } from 'src/users/dto'
+
 import { AuthGuard } from './auth.guard'
+import { RefreshTokenGuard } from './refresh-token.guard'
+
+import { CreateUserDto } from 'src/users/dto'
 
 @Controller('auth')
 export class AuthController {
@@ -12,22 +26,54 @@ export class AuthController {
 
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	register(@Body() registerDto: CreateUserDto) {
-		this.logger.log('register')
-		return this.authService.register(registerDto.username, registerDto.password)
+	async register(@Body() registerDto: CreateUserDto) {
+		this.logger.log('auth/register register')
+
+		return await this.authService.register(registerDto.username, registerDto.password)
 	}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	login(@Body() loginDto: CreateUserDto) {
-		this.logger.log('login')
-		return this.authService.login(loginDto.username, loginDto.password)
+	async login(@Body() loginDto: CreateUserDto, @Res() response: Response) {
+		this.logger.log('auth/login login')
+
+		const { accessToken } = await this.authService.login(
+			loginDto.username,
+			loginDto.password,
+			response,
+		)
+		response.json({ accessToken })
+	}
+
+	@HttpCode(HttpStatus.OK)
+	@Post('refresh')
+	@UseGuards(RefreshTokenGuard)
+	async refresh(@Req() request: Request, @Res() response: Response) {
+		this.logger.log('auth/refresh refresh')
+
+		const { accessToken } = await this.authService.refreshTokens(
+			request.cookies.refreshToken,
+			response,
+		)
+
+		response.json({ accessToken })
+	}
+
+	@Post('logout')
+	@UseGuards(AuthGuard)
+	logout(@Res() response: Response) {
+		this.logger.log('auth/logout logout')
+
+		this.authService.logout(response)
+		response.sendStatus(HttpStatus.OK)
 	}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('check')
 	@UseGuards(AuthGuard)
-	cheackAuth() {
-		this.logger.log('check')
+	checkAuth() {
+		this.logger.log('auth/check checkAuth')
+
+		return { status: 'authenticated' }
 	}
 }
