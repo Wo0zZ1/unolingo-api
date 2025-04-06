@@ -10,8 +10,10 @@ import {
 	Logger,
 } from '@nestjs/common'
 
-import { UsersService } from './users.service'
 import { AuthGuard } from 'src/auth/auth.guard'
+
+import { UsersService } from './users.service'
+
 import { UpdateUserDto } from './dto'
 
 @Controller('users')
@@ -22,29 +24,33 @@ export class UsersController {
 
 	@Get()
 	@UseGuards(AuthGuard)
-	findAll() {
-		this.logger.log('get users')
+	getUsers() {
+		this.logger.log('users getUsers')
+
 		return this.usersService.getUsers()
 	}
 
 	@Get(':id')
 	@UseGuards(AuthGuard)
-	findOne(@Param('id', ParseIntPipe) id: number) {
-		this.logger.log('get users:id')
+	getUserById(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('users/:id getUserById')
+
 		return this.usersService.getUserById(id)
 	}
 
 	@Patch(':id')
 	@UseGuards(AuthGuard)
-	update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-		this.logger.log('patch users:id')
-		return this.usersService.updateUser(id, updateUserDto)
+	updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+		this.logger.log('users/:id updateUser')
+
+		return this.usersService.updateUserById(id, updateUserDto)
 	}
 
 	@Delete(':id')
 	@UseGuards(AuthGuard)
-	remove(@Param('id', ParseIntPipe) id: number) {
-		this.logger.log('delete users:id')
-		return this.usersService.deleteUser(id)
+	deleteUser(@Param('id', ParseIntPipe) id: number) {
+		this.logger.log('users/:id deleteUser')
+
+		return this.usersService.deleteUserById(id)
 	}
 }

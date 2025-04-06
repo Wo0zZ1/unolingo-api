@@ -59,7 +59,7 @@ export class UsersService {
 		}
 	}
 
-	async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<Omit<User, 'password'>> {
+	async updateUserById(id: number, updateUserDto: UpdateUserDto): Promise<Omit<User, 'password'>> {
 		try {
 			return await this.prisma.user.update({
 				data: updateUserDto,
@@ -75,7 +75,7 @@ export class UsersService {
 		}
 	}
 
-	async deleteUser(id: number): Promise<Omit<User, 'password'>> {
+	async deleteUserById(id: number): Promise<Omit<User, 'password'>> {
 		try {
 			return await this.prisma.user.delete({ where: { id }, omit: { password: true } })
 		} catch (error) {

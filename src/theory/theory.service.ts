@@ -3,24 +3,12 @@ import { Prisma } from '@prisma/client'
 
 import { PrismaService } from 'src/prisma.service'
 
-import { CreateTheoryDto, UpdateTheoryDto } from './dto'
+import { UpdateTheoryDto } from './dto'
 import { Theory } from './entities'
 
 @Injectable()
 export class TheoryService {
 	constructor(private readonly prisma: PrismaService) {}
-
-	async create(createTheoryDto: CreateTheoryDto): Promise<Theory> {
-		try {
-			return await this.prisma.theory.create({ data: createTheoryDto })
-		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === 'P2025') throw new NotFoundException()
-				if (error.code === 'P2002') throw new ConflictException()
-			}
-			throw error
-		}
-	}
 
 	async getAll(): Promise<Theory[]> {
 		try {

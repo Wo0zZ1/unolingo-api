@@ -12,7 +12,9 @@ export class SectionsService {
 
 	async create(createSectionDto: CreateSectionDto): Promise<Section> {
 		try {
-			return await this.prisma.section.create({ data: createSectionDto })
+			return await this.prisma.section.create({
+				data: { ...createSectionDto, theory: { create: {} } },
+			})
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()

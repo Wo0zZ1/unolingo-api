@@ -1,6 +1,8 @@
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
+import { join } from 'path'
 
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
@@ -23,6 +25,9 @@ import { StatsModule } from './stats/stats.module'
 			}),
 			global: true,
 			inject: [ConfigService],
+		}),
+		ServeStaticModule.forRoot({
+			rootPath: join(__dirname, '..', 'public'),
 		}),
 		AuthModule,
 		UsersModule,

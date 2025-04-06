@@ -88,6 +88,17 @@ model Section {
   @@unique([languageId, order]) // гарантируем уникальность порядка в рамках языка
 }
 
+model Theory {
+  id         Int      @id @default(autoincrement())
+  section    Section  @relation(fields: [sectionId], references: [id])
+  sectionId  Int      @unique
+  title      String   @default("THEORY TITLE")
+  paragraphs String[] // массив абзацев
+  examples   Json? // дополнительные примеры (может быть null)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model Level {
   id        Int      @id @default(autoincrement())
   order     Int // порядковый номер уровня в секции (1-5)
@@ -119,15 +130,4 @@ model Task {
 enum TaskType {
   WORD_PICKER
   TEXT_INPUT
-}
-
-model Theory {
-  id         Int      @id @default(autoincrement())
-  section    Section  @relation(fields: [sectionId], references: [id])
-  sectionId  Int      @unique
-  title      String
-  paragraphs String[] // массив абзацев
-  examples   Json? // дополнительные примеры (может быть null)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 }

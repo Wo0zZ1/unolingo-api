@@ -1,7 +1,6 @@
 import {
 	Controller,
 	Get,
-	Post,
 	Body,
 	Patch,
 	Param,
@@ -13,20 +12,13 @@ import {
 
 import { TheoryService } from './theory.service'
 
-import { CreateTheoryDto, UpdateTheoryDto } from './dto'
+import { UpdateTheoryDto } from './dto'
 
 @Controller('theory')
 export class TheoryController {
 	constructor(private readonly theoryService: TheoryService) {}
 
 	logger = new Logger()
-
-	@Post()
-	async createTheory(@Body() createTheoryDto: CreateTheoryDto) {
-		this.logger.log('theory createTheory')
-
-		return await this.theoryService.create(createTheoryDto)
-	}
 
 	@Get()
 	async getTheorys() {
