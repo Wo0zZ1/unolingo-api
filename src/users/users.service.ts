@@ -35,6 +35,55 @@ export class UsersService {
 		}
 	}
 
+	async getUserLastLanguageId(id: number): Promise<{ lastLanguageCourseId: number | null }> {
+		const lastLanguageCourseId = (await this.prisma.user.findUnique({
+			where: { id },
+			select: { lastLanguageCourseId: true },
+		})) ?? { lastLanguageCourseId: null }
+		return lastLanguageCourseId
+	}
+
+	async userSubscribeToLanguage(userId: number, languageId: number): Promise<number> {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const [_, lastLanguageCourse] = await this.prisma.$transaction([
+			this.prisma.userProgress.create({
+				data: {
+					userId: userId,
+					languageId: languageId,
+				},
+			}),
+			this.prisma.user.update({
+				where: { id: userId },
+				data: { lastLanguageCourseId: languageId },
+			}),
+		])
+
+		return lastLanguageCourse.id
+	}
+
+	async userUnsubscribeToLanguage(userId: number, languageId: number): Promise<void> {
+		await this.prisma.userProgress.delete({ where: { userId_languageId: { userId, languageId } } })
+	}
+
+	async setUserLastLanguageId(
+		id: number,
+		languageId: number,
+	): Promise<{ lastLanguageId: number | null }> {
+		try {
+			const lastLanguage = await this.prisma.user.update({
+				where: { id },
+				data: { lastLanguageCourseId: languageId },
+			})
+			return { lastLanguageId: lastLanguage.lastLanguageCourseId }
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
 	async getUsers(): Promise<Omit<User, 'password'>[]> {
 		return await this.prisma.user.findMany({ omit: { password: true } })
 	}

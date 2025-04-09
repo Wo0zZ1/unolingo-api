@@ -10,5 +10,6 @@ import { UsersModule } from 'src/users/users.module'
 	imports: [UsersModule],
 	controllers: [ProgressController],
 	providers: [PrismaService, ProgressService],
+	exports: [ProgressService],
 })
 export class ProgressModule {}

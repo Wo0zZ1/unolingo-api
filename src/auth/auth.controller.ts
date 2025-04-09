@@ -16,7 +16,7 @@ import { AuthService } from './auth.service'
 import { AuthGuard } from './auth.guard'
 import { RefreshTokenGuard } from './refresh-token.guard'
 
-import { CreateUserDto } from 'src/users/dto'
+import { CreateUserDto, LoginUserDto } from 'src/users/dto'
 
 @Controller('auth')
 export class AuthController {
@@ -29,12 +29,16 @@ export class AuthController {
 	async register(@Body() registerDto: CreateUserDto) {
 		this.logger.log('auth/register register')
 
-		return await this.authService.register(registerDto.username, registerDto.password)
+		return await this.authService.register(
+			registerDto.username,
+			registerDto.password,
+			registerDto.language,
+		)
 	}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Body() loginDto: CreateUserDto, @Res() response: Response) {
+	async login(@Body() loginDto: LoginUserDto, @Res() response: Response) {
 		this.logger.log('auth/login login')
 
 		const { accessToken } = await this.authService.login(
@@ -60,7 +64,7 @@ export class AuthController {
 	}
 
 	@Post('logout')
-	@UseGuards(AuthGuard)
+	@UseGuards(RefreshTokenGuard)
 	logout(@Res() response: Response) {
 		this.logger.log('auth/logout logout')
 

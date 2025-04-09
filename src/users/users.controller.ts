@@ -8,6 +8,7 @@ import {
 	UseGuards,
 	ParseIntPipe,
 	Logger,
+	Post,
 } from '@nestjs/common'
 
 import { AuthGuard } from 'src/auth/auth.guard'
@@ -15,6 +16,7 @@ import { AuthGuard } from 'src/auth/auth.guard'
 import { UsersService } from './users.service'
 
 import { UpdateUserDto } from './dto'
+import { CurrentUser, IUserJwtPayload } from './current-user.decorator'
 
 @Controller('users')
 export class UsersController {
@@ -22,35 +24,84 @@ export class UsersController {
 
 	logger = new Logger()
 
+	@Post('me/last-language/:languageId')
+	@UseGuards(AuthGuard)
+	async setUserLastLanguageId(
+		@CurrentUser() userPayload: IUserJwtPayload,
+		@Param('languageId', ParseIntPipe) languageId: number,
+	) {
+		this.logger.log('users/me/last-language setUserLastLanguageId')
+
+		return await this.usersService.setUserLastLanguageId(userPayload.id, languageId)
+	}
+
+	@Get('me/last-language')
+	@UseGuards(AuthGuard)
+	async getUserLastLanguageId(@CurrentUser() userPayload: IUserJwtPayload) {
+		this.logger.log('users/me/last-language getUserLastLanguageId')
+
+		return await this.usersService.getUserLastLanguageId(userPayload.id)
+	}
+
+	@Post('me/unsubscribe-language/:languageId')
+	@UseGuards(AuthGuard)
+	async userUnsubscribeToLanguage(
+		@CurrentUser() userPayload: IUserJwtPayload,
+		@Param('languageId', ParseIntPipe) languageId: number,
+	) {
+		this.logger.log('users/me/unsubscribe-language/:languageId userUnsubscribeToLanguage')
+
+		return await this.usersService.userUnsubscribeToLanguage(userPayload.id, languageId)
+	}
+
+	@Post('me/subscribe-language/:languageId')
+	@UseGuards(AuthGuard)
+	async userSubscribeToLanguage(
+		@CurrentUser() userPayload: IUserJwtPayload,
+		@Param('languageId', ParseIntPipe) languageId: number,
+	) {
+		this.logger.log('users/me/subscribe-language/:languageId userSubscribeToLanguage')
+
+		return await this.usersService.userSubscribeToLanguage(userPayload.id, languageId)
+	}
+
 	@Get()
 	@UseGuards(AuthGuard)
-	getUsers() {
+	async getUsers() {
 		this.logger.log('users getUsers')
 
-		return this.usersService.getUsers()
+		return await this.usersService.getUsers()
+	}
+
+	@Get('me')
+	@UseGuards(AuthGuard)
+	async getMe(@CurrentUser() userPayload: IUserJwtPayload) {
+		this.logger.log('users/me getMe')
+
+		return await this.usersService.getUserById(userPayload.id)
 	}
 
 	@Get(':id')
 	@UseGuards(AuthGuard)
-	getUserById(@Param('id', ParseIntPipe) id: number) {
+	async getUserById(@Param('id', ParseIntPipe) id: number) {
 		this.logger.log('users/:id getUserById')
 
-		return this.usersService.getUserById(id)
+		return await this.usersService.getUserById(id)
 	}
 
 	@Patch(':id')
 	@UseGuards(AuthGuard)
-	updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+	async updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
 		this.logger.log('users/:id updateUser')
 
-		return this.usersService.updateUserById(id, updateUserDto)
+		return await this.usersService.updateUserById(id, updateUserDto)
 	}
 
 	@Delete(':id')
 	@UseGuards(AuthGuard)
-	deleteUser(@Param('id', ParseIntPipe) id: number) {
+	async deleteUser(@Param('id', ParseIntPipe) id: number) {
 		this.logger.log('users/:id deleteUser')
 
-		return this.usersService.deleteUserById(id)
+		return await this.usersService.deleteUserById(id)
 	}
 }

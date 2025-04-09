@@ -14,6 +14,9 @@ export class Stat {
 	currentExp: number
 
 	@IsNumber()
+	experienceToNextLevel: number
+
+	@IsNumber()
 	totalExp: number
 
 	@IsNumber()

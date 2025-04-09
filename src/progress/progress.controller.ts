@@ -25,7 +25,7 @@ export class ProgressController {
 		})
 	}
 
-	@Get()
+	@Get('me')
 	@UseGuards(AuthGuard)
 	async getProgresses(@CurrentUser() userPayload: IUserJwtPayload) {
 		this.logger.log('progress getProgresses')

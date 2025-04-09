@@ -7,6 +7,7 @@ import { User } from 'src/users/entities'
 import { IUserJwtPayload } from 'src/users/current-user.decorator'
 import { ConfigService } from '@nestjs/config'
 import { Response } from 'express'
+import { LanguageCode } from 'src/languages/entities'
 
 @Injectable()
 export class AuthService {
@@ -16,8 +17,12 @@ export class AuthService {
 		private readonly usersService: UsersService,
 	) {}
 
-	async register(username: string, password: string): Promise<Omit<User, 'password'>> {
-		return await this.usersService.createUser({ username, password })
+	async register(
+		username: string,
+		password: string,
+		language: LanguageCode,
+	): Promise<Omit<User, 'password'>> {
+		return await this.usersService.createUser({ username, password, language })
 	}
 
 	async validateUser(username: string, pass: string): Promise<Omit<User, 'password'>> {

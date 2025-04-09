@@ -1,4 +1,5 @@
-import { IsDateString, IsNumber, IsString } from 'class-validator'
+import { IsDateString, IsIn, IsNumber, IsString } from 'class-validator'
+import { LanguageCode } from 'src/languages/entities'
 
 export class User {
 	@IsNumber()
@@ -9,6 +10,9 @@ export class User {
 
 	@IsString()
 	password: string
+
+	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
+	language: LanguageCode
 
 	@IsDateString()
 	createdAt: Date

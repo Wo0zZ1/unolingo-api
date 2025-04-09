@@ -1,4 +1,14 @@
-import { PartialType } from '@nestjs/mapped-types'
-import { CreateUserDto } from './create-user.dto'
+import { IsIn, IsString } from 'class-validator'
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+import { LanguageCode } from 'src/languages/entities'
+
+export class UpdateUserDto {
+	@IsString()
+	username?: string
+
+	@IsString()
+	password?: string
+
+	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
+	language?: LanguageCode
+}

@@ -81,14 +81,15 @@ export class TasksController {
 		return await this.tasksService.updateById(id, updateTaskDto)
 	}
 
-	@Patch('/level:levelId/:order')
+	@Patch('level/:levelId/:order')
 	async updateTaskByLevelIdAndOrder(
 		@Param('levelId', ParseIntPipe) levelId: number,
 		@Param('order', ParseIntPipe) order: number,
+		@Body() updateTaskDto: UpdateTaskDto,
 	) {
 		this.logger.log('tasks/level:levelId/:order updateTaskByLevelIdAndOrder')
 
-		return await this.tasksService.getByLevelIdAndOrder(levelId, order)
+		return await this.tasksService.updateByLevelIdAndOrder(levelId, order, updateTaskDto)
 	}
 
 	@Delete(':id')

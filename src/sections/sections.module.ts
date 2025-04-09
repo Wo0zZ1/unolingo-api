@@ -8,5 +8,6 @@ import { SectionsController } from './sections.controller'
 @Module({
 	controllers: [SectionsController],
 	providers: [PrismaService, SectionsService],
+	exports: [SectionsService],
 })
 export class SectionsModule {}

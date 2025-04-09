@@ -60,6 +60,18 @@ export class SectionsService {
 		}
 	}
 
+	async getByLevelId(levelId: number): Promise<Section | null> {
+		try {
+			return await this.prisma.section.findFirst({ where: { levels: { some: { id: levelId } } } })
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				if (error.code === 'P2025') throw new NotFoundException()
+				if (error.code === 'P2002') throw new ConflictException()
+			}
+			throw error
+		}
+	}
+
 	async getByLanguageIdAndOrder(languageId: number, order: number): Promise<Section | null> {
 		try {
 			return await this.prisma.section.findUnique({
