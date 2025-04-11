@@ -4,19 +4,19 @@ import { LanguageCode } from 'src/languages/entities'
 
 export class CreateUserDto {
 	@IsString()
-	username: string
+	username!: string
 
 	@IsString()
-	password: string
+	password!: string
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	language: LanguageCode
+	language!: LanguageCode
 }
 
 export class LoginUserDto {
 	@IsString()
-	username: string
+	username!: string
 
 	@IsString()
-	password: string
+	password!: string
 }

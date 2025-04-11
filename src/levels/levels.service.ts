@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { PrismaService } from 'src/prisma.service'
 
@@ -14,7 +14,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.create({ data: { sectionId, order } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -26,7 +26,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.findMany()
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -38,7 +38,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.findMany({ where: { sectionId } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -50,7 +50,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.findUnique({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -64,7 +64,7 @@ export class LevelsService {
 				where: { sectionId_order: { sectionId, order } },
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -76,7 +76,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.update({ where: { id }, data: updateLevelDto })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -95,7 +95,7 @@ export class LevelsService {
 				data: updateLevelDto,
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -107,7 +107,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.delete({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -119,7 +119,7 @@ export class LevelsService {
 		try {
 			return await this.prisma.level.delete({ where: { sectionId_order: { sectionId, order } } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}

@@ -2,20 +2,20 @@ import { IsDateString, IsNumber } from 'class-validator'
 
 export class Progress {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	userId: number
+	userId!: number
 
 	@IsNumber()
-	languageId: number
+	languageId!: number
 
 	@IsNumber()
-	lastUnlockedLevel: number
+	lastUnlockedLevel!: number
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

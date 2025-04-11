@@ -3,20 +3,20 @@ import { LanguageCode } from 'src/languages/entities'
 
 export class User {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsString()
-	username: string
+	username!: string
 
 	@IsString()
-	password: string
+	password!: string
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	language: LanguageCode
+	language!: LanguageCode
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

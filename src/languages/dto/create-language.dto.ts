@@ -4,14 +4,14 @@ import { LanguageCode } from '../entities/language.entity'
 
 export class CreateLanguageDto {
 	@IsString()
-	name: string
+	name!: string
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	sourceLang: LanguageCode
+	sourceLang!: LanguageCode
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	targetLang: LanguageCode
+	targetLang!: LanguageCode
 
 	@IsString()
-	flagIcon: string
+	flagIcon!: string
 }

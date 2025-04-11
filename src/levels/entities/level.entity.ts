@@ -2,17 +2,17 @@ import { IsDateString, IsNumber } from 'class-validator'
 
 export class Level {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	order: number
+	order!: number
 
 	@IsNumber()
-	sectionId: number
+	sectionId!: number
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

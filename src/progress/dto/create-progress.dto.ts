@@ -2,8 +2,8 @@ import { IsNumber } from 'class-validator'
 
 export class CreateProgressDto {
 	@IsNumber()
-	userId: number
+	userId!: number
 
 	@IsNumber()
-	languageId: number
+	languageId!: number
 }

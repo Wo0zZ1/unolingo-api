@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { PrismaService } from 'src/prisma.service'
 
@@ -14,7 +14,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.findMany()
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -26,7 +26,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.findUnique({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -38,7 +38,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.findUnique({ where: { sectionId } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -50,7 +50,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.update({ where: { id }, data: updateTheoryDto })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -62,7 +62,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.update({ where: { sectionId }, data: updateTheoryDto })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -74,7 +74,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.delete({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -86,7 +86,7 @@ export class TheoryService {
 		try {
 			return await this.prisma.theory.delete({ where: { sectionId } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}

@@ -2,11 +2,11 @@ import { IsNumber } from 'class-validator'
 
 export class CompleteLevelDto {
 	@IsNumber()
-	levelGlobalOrder: number
+	levelGlobalOrder!: number
 
 	@IsNumber()
-	errors: number
+	errors!: number
 
 	@IsNumber()
-	time: number
+	time!: number
 }

@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { PrismaService } from 'src/prisma.service'
 
@@ -16,7 +16,7 @@ export class SectionsService {
 				data: { ...createSectionDto, theory: { create: {} } },
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -28,7 +28,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.findMany()
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -40,7 +40,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.findMany({ where: { languageId } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -52,7 +52,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.findUnique({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -64,7 +64,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.findFirst({ where: { levels: { some: { id: levelId } } } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -78,7 +78,7 @@ export class SectionsService {
 				where: { languageId_order: { languageId, order } },
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -90,7 +90,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.update({ where: { id }, data: updateSectionDto })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -109,7 +109,7 @@ export class SectionsService {
 				data: updateSectionDto,
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -121,7 +121,7 @@ export class SectionsService {
 		try {
 			return await this.prisma.section.delete({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -135,7 +135,7 @@ export class SectionsService {
 				where: { languageId_order: { languageId, order } },
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}

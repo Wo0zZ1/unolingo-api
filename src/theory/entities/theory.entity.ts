@@ -3,20 +3,20 @@ import { JsonValue } from '@prisma/client/runtime/library'
 
 export class Theory {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	sectionId: number
+	sectionId!: number
 
 	@IsString()
-	title: string
+	title!: string
 
 	@IsJSON({ each: true })
-	paragraphs: JsonValue[]
+	paragraphs!: JsonValue[]
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

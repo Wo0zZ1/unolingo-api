@@ -4,13 +4,13 @@ import { TTaskType } from '../entities/task.entity'
 
 export class CreateTaskDtoWithoutLevelIdAndOrder {
 	@IsIn(['WORD_PICKER', 'TEXT_INPUT'])
-	type: TTaskType
+	type!: TTaskType
 
 	@IsString()
-	question: string
+	question!: string
 
 	@IsString()
-	correctAnswer: string
+	correctAnswer!: string
 
 	@IsOptional()
 	@IsString({ each: true })
@@ -23,8 +23,8 @@ export class CreateTaskDtoWithoutLevelIdAndOrder {
 
 export class CreateTaskDto extends CreateTaskDtoWithoutLevelIdAndOrder {
 	@IsNumber()
-	order: number
+	order!: number
 
 	@IsNumber()
-	levelId: number
+	levelId!: number
 }

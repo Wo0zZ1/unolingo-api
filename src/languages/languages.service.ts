@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { PrismaService } from 'src/prisma.service'
 
@@ -14,7 +14,7 @@ export class LanguagesService {
 		try {
 			return await this.prisma.language.create({ data: createLanguageDto })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -26,7 +26,7 @@ export class LanguagesService {
 		try {
 			return await this.prisma.language.findMany()
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -38,7 +38,7 @@ export class LanguagesService {
 		try {
 			return await this.prisma.language.findUnique({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -53,7 +53,7 @@ export class LanguagesService {
 				data: updateLanguageDto,
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -65,7 +65,7 @@ export class LanguagesService {
 		try {
 			return await this.prisma.language.delete({ where: { id } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}

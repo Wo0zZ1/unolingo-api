@@ -4,23 +4,23 @@ export type LanguageCode = 'RU' | 'EN' | 'DE' | 'FR' | 'ES'
 
 export class Language {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsString()
-	name: string
+	name!: string
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	sourceLang: LanguageCode
+	sourceLang!: LanguageCode
 
 	@IsIn(['RU', 'EN', 'DE', 'FR', 'ES'])
-	targetLang: LanguageCode
+	targetLang!: LanguageCode
 
 	@IsString()
-	flagIcon: string
+	flagIcon!: string
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

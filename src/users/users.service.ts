@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt'
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { PrismaService } from 'src/prisma.service'
 import { CreateUserDto, UpdateUserDto } from './dto'
@@ -28,7 +28,7 @@ export class UsersService {
 
 			return user
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+			if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002')
 				throw new ConflictException()
 
 			throw error
@@ -76,7 +76,7 @@ export class UsersService {
 			})
 			return { lastLanguageId: lastLanguage.lastLanguageCourseId }
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -92,7 +92,7 @@ export class UsersService {
 		try {
 			return await this.prisma.user.findUniqueOrThrow({ where: { id }, omit: { password: true } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025')
+			if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025')
 				throw new NotFoundException()
 			throw error
 		}
@@ -102,7 +102,7 @@ export class UsersService {
 		try {
 			return await this.prisma.user.findUniqueOrThrow({ where: { username } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025')
+			if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025')
 				throw new NotFoundException()
 			throw error
 		}
@@ -116,7 +116,7 @@ export class UsersService {
 				omit: { password: true },
 			})
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error instanceof PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') throw new NotFoundException()
 				if (error.code === 'P2002') throw new ConflictException()
 			}
@@ -128,7 +128,7 @@ export class UsersService {
 		try {
 			return await this.prisma.user.delete({ where: { id }, omit: { password: true } })
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025')
+			if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025')
 				throw new NotFoundException()
 			throw error
 		}

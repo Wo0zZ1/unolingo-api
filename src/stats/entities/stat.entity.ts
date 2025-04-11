@@ -2,26 +2,26 @@ import { IsDateString, IsNumber } from 'class-validator'
 
 export class Stat {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	userId: number
+	userId!: number
 
 	@IsNumber()
-	level: number
+	level!: number
 
 	@IsNumber()
-	currentExp: number
+	currentExp!: number
 
 	@IsNumber()
-	experienceToNextLevel: number
+	experienceToNextLevel!: number
 
 	@IsNumber()
-	totalExp: number
+	totalExp!: number
 
 	@IsNumber()
-	streakDays: number
+	streakDays!: number
 
 	@IsDateString()
-	lastActive: Date
+	lastActive!: Date
 }

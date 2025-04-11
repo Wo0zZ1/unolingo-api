@@ -19,7 +19,7 @@ import { StatsModule } from './stats/stats.module'
 		ConfigModule.forRoot({ isGlobal: true }),
 		JwtModule.register({ global: true }),
 		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, '..', 'public'),
+			rootPath: join(__dirname, '..', 'assets'),
 		}),
 		AuthModule,
 		UsersModule,

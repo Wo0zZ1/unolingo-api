@@ -2,20 +2,20 @@ import { IsDateString, IsNumber, IsString } from 'class-validator'
 
 export class Section {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	order: number
+	order!: number
 
 	@IsString()
-	name: string
+	name!: string
 
 	@IsNumber()
-	languageId: number
+	languageId!: number
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }

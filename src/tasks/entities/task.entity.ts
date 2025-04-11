@@ -4,32 +4,32 @@ export type TTaskType = 'WORD_PICKER' | 'TEXT_INPUT'
 
 export class Task {
 	@IsNumber()
-	id: number
+	id!: number
 
 	@IsNumber()
-	order: number
+	order!: number
 
 	@IsNumber()
-	levelId: number
+	levelId!: number
 
 	@IsIn(['WORD_PICKER', 'TEXT_INPUT'])
-	type: TTaskType
+	type!: TTaskType
 
 	@IsString()
-	question: string
+	question!: string
 
 	@IsString()
-	correctAnswer: string
+	correctAnswer!: string
 
 	@IsString({ each: true })
-	partialAnswer: string[]
+	partialAnswer!: string[]
 
 	@IsString({ each: true })
-	options: string[]
+	options!: string[]
 
 	@IsDateString()
-	createdAt: Date
+	createdAt!: Date
 
 	@IsDateString()
-	updatedAt: Date
+	updatedAt!: Date
 }
