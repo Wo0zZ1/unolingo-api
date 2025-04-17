@@ -25,6 +25,7 @@ services:
     container_name: nestjs-app
     environment:
       - DATABASE_URL=postgresql://postgres:qwerty123@db:5432/unolingo-db?schema=public
+      - SEED_DATABASE=${SEED_DATABASE:-false}
     volumes:
       - /usr/src/app/node_modules
     ports:
