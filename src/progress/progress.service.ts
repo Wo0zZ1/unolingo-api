@@ -10,8 +10,6 @@ export class ProgressService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async createProgress(createProgressDto: CreateProgressDto): Promise<Progress> {
-		console.log(createProgressDto)
-
 		return await this.prisma.userProgress.create({
 			data: {
 				userId: createProgressDto.userId,
@@ -37,9 +35,6 @@ export class ProgressService {
 		languageId: number,
 	): Promise<boolean> {
 		const oldUserProgress = await this.getProgress(userId, languageId)
-    console.log(sectionOrder, levelOrder, userId, languageId);
-    console.log(oldUserProgress);
-    
 		if (!oldUserProgress) return false
 		const lastLevel = (sectionOrder - 1) * 5 + levelOrder === oldUserProgress.lastUnlockedLevel
 		await this.prisma.userProgress.update({
