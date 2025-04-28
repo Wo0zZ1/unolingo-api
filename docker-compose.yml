@@ -25,11 +25,17 @@ services:
     container_name: nestjs-app
     environment:
       - DATABASE_URL=postgresql://postgres:qwerty123@db:5432/unolingo-db?schema=public
-      - SEED_DATABASE=${SEED_DATABASE:-false}
+      - JWT_ACCESS_TOKEN_SECRET=${JWT_ACCESS_TOKEN_SECRET}
+      - JWT_ACCESS_TOKEN_EXPIRES_IN=${JWT_ACCESS_TOKEN_EXPIRES_IN}
+      - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
+      - JWT_REFRESH_TOKEN_EXPIRES_IN=${JWT_REFRESH_TOKEN_EXPIRES_IN}
+      - SALT=${SALT}
+      - PORT=${PORT}
+      - SEED_DATABASE=${SEED_DATABASE:-true}
     volumes:
       - /usr/src/app/node_modules
     ports:
-      - '3000:3000'
+      - '${PORT}:${PORT}'
     depends_on:
       db:
         condition: service_healthy

@@ -9,9 +9,6 @@ async function main() {
 		console.log('Starting database seeding...')
 
 		await prisma.$transaction(async prisma => {
-			await prisma.user.createMany({
-				data: [{ username: 'John', password: 'Doe', language: 'RU' }],
-			})
 			await prisma.language.createMany({
 				data: [
 					{
@@ -51,7 +48,248 @@ async function main() {
 					{ languageId: 1, name: 'Future Simple', order: 3, id: 3 },
 					{ languageId: 2, name: 'Präsens', order: 1, id: 4 },
 					{ languageId: 2, name: 'Präteritum', order: 2, id: 5 },
+					{ languageId: 3, name: 'Présent', order: 1, id: 6 },
 					{ languageId: 4, name: 'Präsens', order: 1, id: 7 },
+				],
+			})
+			await prisma.theory.createMany({
+				data: [
+					{
+						sectionId: 1,
+						title: 'Present Simple',
+						paragraphs: [
+							{
+								title: 'Когда используется:',
+								items: [
+									'Для регулярных действий (I work every day)',
+									'Для общеизвестных фактов (Water boils at 100°C)',
+									'Для постоянных состояний (He lives in London)',
+								],
+							},
+							{
+								title: 'Правила построения:',
+								items: [
+									'Утверждение: Subject + V/Vs (She works)',
+									"Отрицание: do/does + not + V (I don't work)",
+									'Вопрос: Do/Does + subject + V? (Do you work?)',
+								],
+							},
+							{
+								title: 'Примеры:',
+								items: [
+									'Я говорю → I speak',
+									"Она не играет → She doesn't play",
+									'Ты работаешь? → Do you work?',
+								],
+							},
+						],
+					},
+					// Past Simple (RU → EN)
+					{
+						sectionId: 2,
+						title: 'Past Simple',
+						paragraphs: [
+							{
+								title: 'Когда используется:',
+								items: [
+									'Завершённые действия в прошлом (I saw him yesterday)',
+									'Последовательность событий (I came, I saw, I conquered)',
+								],
+							},
+							{
+								title: 'Правила:',
+								items: [
+									'Правильные глаголы: V + ed (worked)',
+									'Неправильные глаголы: 2-я форма (see → saw)',
+									"Отрицание: did + not + V (I didn't go)",
+									'Вопрос: Did + subject + V? (Did you eat?)',
+								],
+							},
+							{
+								title: 'Примеры:',
+								items: [
+									'Я работал → I worked',
+									"Она не пришла → She didn't come",
+									'Ты видел? → Did you see?',
+								],
+							},
+						],
+					},
+					// Future Simple (RU → EN)
+					{
+						sectionId: 3,
+						title: 'Future Simple',
+						paragraphs: [
+							{
+								title: 'Когда используется:',
+								items: [
+									"Спонтанные решения (I'll answer the phone)",
+									'Прогнозы (It will rain tomorrow)',
+									"Обещания (I'll call you later)",
+								],
+							},
+							{
+								title: 'Правила:',
+								items: [
+									'Утверждение: will + V (I will go)',
+									"Отрицание: will + not + V (I won't tell)",
+									'Вопрос: Will + subject + V? (Will you help?)',
+								],
+							},
+							{
+								title: 'Примеры:',
+								items: [
+									'Я сделаю → I will do',
+									"Она не придёт → She won't come",
+									'Ты поможешь? → Will you help?',
+								],
+							},
+						],
+					},
+					// Präsens (RU → DE)
+					{
+						sectionId: 4,
+						title: 'Präsens',
+						paragraphs: [
+							{
+								title: 'Когда используется:',
+								items: [
+									'Регулярные действия (Ich arbeite → Я работаю)',
+									'Общие факты (Wasser kocht bei 100°C → Вода кипит при 100°C)',
+								],
+							},
+							{
+								title: 'Правила спряжения:',
+								items: [
+									'ich: -e (arbeite)',
+									'du: -st (arbeitest)',
+									'er/sie/es: -t (arbeitet)',
+									'wir/sie/Sie: -en (arbeiten)',
+								],
+							},
+							{
+								title: 'Примеры:',
+								items: [
+									'Я учу → Ich lerne',
+									'Ты играешь → Du spielst',
+									'Он работает → Er arbeitet',
+								],
+							},
+						],
+					},
+					// Präteritum (RU → DE)
+					{
+						sectionId: 5,
+						title: 'Präteritum',
+						paragraphs: [
+							{
+								title: 'Когда используется:',
+								items: [
+									'Письменная речь/рассказы (Es war einmal...)',
+									'Прошедшие события (Ich ging gestern ins Kino)',
+								],
+							},
+							{
+								title: 'Правила:',
+								items: [
+									'Слабые глаголы: корень + -te (ich lernte)',
+									'Сильные глаголы: изменение корня (gehen → ging)',
+									'Отрицание: nicht + глагол (Ich ging nicht)',
+								],
+							},
+							{
+								title: 'Примеры:',
+								items: [
+									'Я учил → Ich lernte',
+									'Она пришла → Sie kam',
+									'Мы не видели → Wir sahen nicht',
+								],
+							},
+						],
+					},
+					// Présent (RU → FR)
+					{
+						sectionId: 6,
+						title: 'Présent',
+						paragraphs: [
+							{
+								title: 'When used:',
+								items: [
+									'For actions happening now (Je mange → Я ем прямо сейчас)',
+									'For habits (Je vais au travail → Я хожу на работу)',
+									'For general truths (Paris est en France → Париж находится во Франции)',
+								],
+							},
+							{
+								title: 'Verb conjugation rules:',
+								items: [
+									'-ER verbs (parler): je parle, tu parles, il/elle parle, nous parlons, vous parlez, ils/elles parlent',
+									'-IR verbs (finir): je finis, tu finis, il/elle finit, nous finissons, vous finissez, ils/elles finissent',
+									'-RE verbs (vendre): je vends, tu vends, il/elle vend, nous vendons, vous vendez, ils/elles vendent',
+								],
+							},
+							{
+								title: 'Negation rules:',
+								items: [
+									'Basic structure: ne + verb + pas (Je ne parle pas → Я не говорю)',
+									"With vowels: n' + verb + pas (Je n'aime pas → Я не люблю)",
+								],
+							},
+							{
+								title: 'Question formation:',
+								items: [
+									'Inversion: Parles-tu français? (Ты говоришь по-французски?)',
+									'With "Est-ce que": Est-ce que tu parles français?',
+									'Intonation: Tu parles français? (spoken)',
+								],
+							},
+							{
+								title: 'Common irregular verbs:',
+								items: [
+									'Être (to be): je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont',
+									"Avoir (to have): j'ai, tu as, il/elle a, nous avons, vous avez, ils/elles ont",
+									'Aller (to go): je vais, tu vas, il/elle va, nous allons, vous allez, ils/elles vont',
+								],
+							},
+							{
+								title: 'Sample sentences:',
+								items: [
+									'I speak → Je parle',
+									'You (singular) eat → Tu manges',
+									'We live → Nous habitons',
+									"They don't understand → Ils ne comprennent pas",
+									'Do you work? → Travaillez-vous?',
+								],
+							},
+						],
+					},
+					// Präsens (EN → DE)
+					{
+						sectionId: 7,
+						title: 'Präsens',
+						paragraphs: [
+							{
+								title: 'When used:',
+								items: [
+									'For regular actions (I work → Ich arbeite)',
+									'General facts (Cats eat fish → Katzen essen Fisch)',
+								],
+							},
+							{
+								title: 'Conjugation rules:',
+								items: [
+									'ich: -e (lerne)',
+									'du: -st (lernst)',
+									'er/sie/es: -t (lernt)',
+									'wir/sie/Sie: -en (lernen)',
+								],
+							},
+							{
+								title: 'Sample sentences:',
+								items: ['I learn → Ich lerne', 'You speak → Du sprichst', 'He works → Er arbeitet'],
+							},
+						],
+					},
 				],
 			})
 			await prisma.level.createMany({
@@ -86,12 +324,18 @@ async function main() {
 					{ sectionId: 5, order: 3, id: 23 },
 					{ sectionId: 5, order: 4, id: 24 },
 					{ sectionId: 5, order: 5, id: 25 },
+					// SECTION Présent RU FR
+					{ sectionId: 6, order: 1, id: 26 },
+					{ sectionId: 6, order: 2, id: 27 },
+					{ sectionId: 6, order: 3, id: 28 },
+					{ sectionId: 6, order: 4, id: 29 },
+					{ sectionId: 6, order: 5, id: 30 },
 					// SECTION Präsens EN GE
-					{ sectionId: 7, order: 1, id: 26 },
-					{ sectionId: 7, order: 2, id: 27 },
-					{ sectionId: 7, order: 3, id: 28 },
-					{ sectionId: 7, order: 4, id: 29 },
-					{ sectionId: 7, order: 5, id: 30 },
+					{ sectionId: 7, order: 1, id: 31 },
+					{ sectionId: 7, order: 2, id: 32 },
+					{ sectionId: 7, order: 3, id: 33 },
+					{ sectionId: 7, order: 4, id: 34 },
+					{ sectionId: 7, order: 5, id: 35 },
 				],
 			})
 			await prisma.task.createMany({
@@ -106,8 +350,6 @@ async function main() {
 						options: ['study', 'I', 'English'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:30:07.946Z',
-						updatedAt: '2025-04-07T22:30:07.946Z',
 					},
 					{
 						id: 2,
@@ -118,8 +360,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['We', 'the violins'],
 						order: 2,
-						createdAt: '2025-04-07T22:30:13.223Z',
-						updatedAt: '2025-04-07T22:30:13.223Z',
 					},
 					{
 						id: 3,
@@ -130,8 +370,6 @@ async function main() {
 						options: ['milk', 'like', 'Cats'],
 						partialAnswer: [],
 						order: 3,
-						createdAt: '2025-04-07T22:30:17.605Z',
-						updatedAt: '2025-04-07T22:30:17.605Z',
 					},
 					{
 						id: 4,
@@ -142,8 +380,6 @@ async function main() {
 						options: ['speak', 'not', 'English', 'do', 'I'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:30:25.313Z',
-						updatedAt: '2025-04-07T22:30:25.313Z',
 					},
 					{
 						id: 5,
@@ -154,20 +390,16 @@ async function main() {
 						options: [],
 						partialAnswer: ['Nobody', 'Latin'],
 						order: 2,
-						createdAt: '2025-04-07T22:30:44.161Z',
-						updatedAt: '2025-04-07T22:30:44.161Z',
 					},
 					{
 						id: 6,
 						levelId: 2,
 						type: 'WORD_PICKER',
-						question: 'Кот Саймона не любит плавать',
-						correctAnswer: "Simon's cat doesn't like to swim",
-						options: ['cat', 'doesn', 'Simon', "'t", "'s", 'swim', 'to', 'like'],
+						question: 'Моя собака не любит кошек',
+						correctAnswer: "My dog doesn't like cats",
+						options: ['dog', 'doesn', 'My', "'t", 'cats', 'like'],
 						partialAnswer: [],
 						order: 3,
-						createdAt: '2025-04-07T22:30:49.802Z',
-						updatedAt: '2025-04-07T22:30:49.802Z',
 					},
 					{
 						id: 7,
@@ -178,8 +410,6 @@ async function main() {
 						options: ['cat', 'doesn', 'Simon', "'t", "'s", 'swim', 'to', 'like'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:31:16.820Z',
-						updatedAt: '2025-04-07T22:31:16.820Z',
 					},
 					{
 						id: 8,
@@ -187,11 +417,9 @@ async function main() {
 						type: 'TEXT_INPUT',
 						question: 'Ты говоришь по-английски?',
 						correctAnswer: 'Do you speak English?',
-						options: ['', 'English?'],
+						options: [],
 						partialAnswer: ['', 'English?'],
 						order: 2,
-						createdAt: '2025-04-07T22:31:22.390Z',
-						updatedAt: '2025-04-08T22:35:10.818Z',
 					},
 					{
 						id: 9,
@@ -202,8 +430,6 @@ async function main() {
 						options: ['cat', 'Does', 'Simon', "'s", 'swim?', 'to', 'like'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:31:28.296Z',
-						updatedAt: '2025-04-07T22:31:28.296Z',
 					},
 					{
 						id: 10,
@@ -214,20 +440,16 @@ async function main() {
 						options: ['does', 'violin?', 'Where', 'play', 'the', 'she'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:31:33.252Z',
-						updatedAt: '2025-04-07T22:31:33.252Z',
 					},
 					{
 						id: 11,
 						levelId: 5,
-						type: 'TEXT_INPUT',
+						type: 'WORD_PICKER',
 						question: 'Медицинские записи конфиденциальны',
 						correctAnswer: 'Medical records are confidential',
-						options: ['Medical records', 'confidential'],
+						options: ['records', 'are', 'Medical', 'confidential'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:31:55.403Z',
-						updatedAt: '2025-04-07T22:31:55.403Z',
 					},
 					{
 						id: 12,
@@ -238,8 +460,6 @@ async function main() {
 						options: ['your', 'Is', 'first', 'application', 'this', 'college?', 'to'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:31:40.183Z',
-						updatedAt: '2025-04-07T22:31:40.183Z',
 					},
 					// SECTION PAST SIMPLE RU EN
 					{
@@ -251,8 +471,6 @@ async function main() {
 						options: ['worked', 'abroad', 'She'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:32:42.944Z',
-						updatedAt: '2025-04-07T22:32:42.944Z',
 					},
 					{
 						id: 14,
@@ -263,8 +481,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['Harry', 'of books'],
 						order: 2,
-						createdAt: '2025-04-07T22:32:47.220Z',
-						updatedAt: '2025-04-07T22:32:47.220Z',
 					},
 					{
 						id: 15,
@@ -275,20 +491,16 @@ async function main() {
 						options: ['were', 'reckless', 'We', 'young', 'and'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:32:53.358Z',
-						updatedAt: '2025-04-07T22:32:53.358Z',
 					},
 					{
 						id: 16,
 						levelId: 7,
-						type: 'WORD_PICKER',
-						question: 'Она не работала за границей',
-						correctAnswer: 'She did not work abroad',
-						options: ['abroad', 'She', 'work', 'did', 'not'],
-						partialAnswer: [],
+						type: 'TEXT_INPUT',
+						question: 'Ты был занят вчера?',
+						correctAnswer: 'Were you busy yesterday?',
+						options: [],
+						partialAnswer: ['', 'yesterday?'],
 						order: 2,
-						createdAt: '2025-04-07T22:32:58.089Z',
-						updatedAt: '2025-04-07T22:32:58.089Z',
 					},
 					{
 						id: 17,
@@ -299,20 +511,16 @@ async function main() {
 						options: ['abroad', 'She', 'work', 'did', 'not'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:33:03.265Z',
-						updatedAt: '2025-04-07T22:33:03.265Z',
 					},
 					{
 						id: 18,
 						levelId: 8,
 						type: 'WORD_PICKER',
-						question: 'Я не была злой вчера',
-						correctAnswer: 'I was not angry yesterday',
-						options: ['yesterday', 'was', 'I', 'angry', 'not'],
+						question: 'Они не были дома вчера',
+						correctAnswer: 'They were not at home yesterday',
+						options: ['yesterday', 'were', 'They', 'at', 'home', 'not'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:33:09.593Z',
-						updatedAt: '2025-04-07T22:33:09.593Z',
 					},
 					{
 						id: 19,
@@ -323,8 +531,6 @@ async function main() {
 						options: ['yesterday', 'was', 'I', 'angry', 'not'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:33:17.053Z',
-						updatedAt: '2025-04-07T22:33:17.053Z',
 					},
 					{
 						id: 20,
@@ -335,8 +541,6 @@ async function main() {
 						options: ['was', 'I', 'tired'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:33:23.060Z',
-						updatedAt: '2025-04-07T22:33:23.060Z',
 					},
 					{
 						id: 21,
@@ -344,11 +548,9 @@ async function main() {
 						type: 'WORD_PICKER',
 						question: 'Где были твои родители прошлым летом?',
 						correctAnswer: 'Where were your parents last summer?',
-						options: ['summer', 'parents', 'Where', 'were', 'your', 'last'],
+						options: ['summer?', 'parents', 'Where', 'were', 'your', 'last'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:33:31.711Z',
-						updatedAt: '2025-04-07T22:33:31.711Z',
 					},
 					{
 						id: 22,
@@ -356,11 +558,9 @@ async function main() {
 						type: 'TEXT_INPUT',
 						question: 'Она работала за границей два года назад',
 						correctAnswer: 'She worked abroad 2 years ago',
-						options: ['She', '2 years ago'],
-						partialAnswer: [],
+						options: [],
+						partialAnswer: ['She', '2 years ago'],
 						order: 2,
-						createdAt: '2025-04-07T22:33:36.153Z',
-						updatedAt: '2025-04-07T22:33:36.153Z',
 					},
 					{
 						id: 23,
@@ -371,8 +571,6 @@ async function main() {
 						options: ['my', 'met', 'I', 'yesterday', 'friend', 'old'],
 						partialAnswer: [],
 						order: 3,
-						createdAt: '2025-04-07T22:33:47.244Z',
-						updatedAt: '2025-04-07T22:33:47.244Z',
 					},
 					// SECTION FUTURE SIMPLE RU EN
 					{
@@ -384,8 +582,6 @@ async function main() {
 						options: ['will', 'My', 'this', 'husband', 'me', 'buy', 'ring', 'for'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:34:21.671Z',
-						updatedAt: '2025-04-07T22:34:21.671Z',
 					},
 					{
 						id: 25,
@@ -396,8 +592,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['I', 'next week'],
 						order: 2,
-						createdAt: '2025-04-07T22:34:25.212Z',
-						updatedAt: '2025-04-07T22:34:25.212Z',
 					},
 					{
 						id: 26,
@@ -408,8 +602,6 @@ async function main() {
 						options: ['will', 'not', 'I', 'for', 'go', 'tomorrow', 'a', 'walk'],
 						partialAnswer: [],
 						order: 3,
-						createdAt: '2025-04-07T22:34:28.975Z',
-						updatedAt: '2025-04-07T22:34:28.975Z',
 					},
 					{
 						id: 27,
@@ -420,8 +612,6 @@ async function main() {
 						options: ['will', 'find', 'We', 'key', 'not', 'tomorrow', 'your'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:34:35.998Z',
-						updatedAt: '2025-04-07T22:34:35.998Z',
 					},
 					{
 						id: 28,
@@ -432,8 +622,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['I', 'there'],
 						order: 2,
-						createdAt: '2025-04-07T22:34:40.172Z',
-						updatedAt: '2025-04-07T22:34:40.172Z',
 					},
 					{
 						id: 29,
@@ -444,8 +632,6 @@ async function main() {
 						options: ['for', 'go', 'Will', 'a', 'I', 'tomorrow?', 'walk'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:34:45.028Z',
-						updatedAt: '2025-04-07T22:34:45.028Z',
 					},
 					{
 						id: 30,
@@ -456,8 +642,6 @@ async function main() {
 						options: ['', 'tomorrow'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:34:49.323Z',
-						updatedAt: '2025-04-07T22:34:49.323Z',
 					},
 					{
 						id: 31,
@@ -468,8 +652,6 @@ async function main() {
 						options: ['will', 'I', 'Where', 'go', 'tomorrow'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:34:55.029Z',
-						updatedAt: '2025-04-07T22:34:55.029Z',
 					},
 					{
 						id: 32,
@@ -480,8 +662,6 @@ async function main() {
 						options: ['think', 'will', 'I', 'competition', 'he', 'this', 'win'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:34:58.885Z',
-						updatedAt: '2025-04-07T22:34:58.885Z',
 					},
 					{
 						id: 33,
@@ -492,8 +672,6 @@ async function main() {
 						options: ['The great storm', ''],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:35:06.407Z',
-						updatedAt: '2025-04-07T22:35:06.407Z',
 					},
 					{
 						id: 34,
@@ -504,8 +682,6 @@ async function main() {
 						options: ['paint', 'will', 'I', 'this', 'table'],
 						partialAnswer: [],
 						order: 2,
-						createdAt: '2025-04-07T22:35:11.972Z',
-						updatedAt: '2025-04-07T22:35:11.972Z',
 					},
 					// SECTION Präsens RU GE
 					{
@@ -517,8 +693,6 @@ async function main() {
 						options: ['Ich', 'das', 'lese', 'Buch'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:36:31.733Z',
-						updatedAt: '2025-04-08T18:50:50.953Z',
 					},
 					{
 						id: 36,
@@ -529,8 +703,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['Wir', 'Deutsch'],
 						order: 1,
-						createdAt: '2025-04-07T22:36:37.592Z',
-						updatedAt: '2025-04-07T22:36:37.592Z',
 					},
 					{
 						id: 37,
@@ -541,8 +713,6 @@ async function main() {
 						options: ['der', 'Schule', 'in', 'Sie', 'arbeitet'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:36:47.015Z',
-						updatedAt: '2025-04-08T23:01:31.604Z',
 					},
 					{
 						id: 38,
@@ -553,8 +723,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['Du', 'Kaffee am Morgen'],
 						order: 1,
-						createdAt: '2025-04-07T22:36:54.004Z',
-						updatedAt: '2025-04-07T22:36:54.004Z',
 					},
 					{
 						id: 39,
@@ -565,8 +733,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['Sie', 'in Berlin'],
 						order: 1,
-						createdAt: '2025-04-07T22:37:01.526Z',
-						updatedAt: '2025-04-09T17:52:14.424Z',
 					},
 					// SECTION Präteritum RU GE
 					{
@@ -578,8 +744,6 @@ async function main() {
 						options: ['einen', 'Film', 'Gestern', 'ich', 'sah'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:37:08.115Z',
-						updatedAt: '2025-04-09T17:51:36.975Z',
 					},
 					{
 						id: 41,
@@ -590,8 +754,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['Wir', 'im Park'],
 						order: 1,
-						createdAt: '2025-04-07T22:37:12.524Z',
-						updatedAt: '2025-04-07T22:37:12.524Z',
 					},
 					{
 						id: 42,
@@ -599,11 +761,9 @@ async function main() {
 						type: 'WORD_PICKER',
 						question: 'Она купила новое платье',
 						correctAnswer: 'Sie kaufte ein neues Kleid',
-						options: ['Sie', 'Kleid', 'zu', 'neues', 'kaufte', 'ein'],
+						options: ['Sie', 'Kleid', 'neues', 'kaufte', 'ein'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:37:17.492Z',
-						updatedAt: '2025-04-07T22:37:17.492Z',
 					},
 					{
 						id: 43,
@@ -614,8 +774,6 @@ async function main() {
 						options: [],
 						partialAnswer: ['', 'du gestern?'],
 						order: 1,
-						createdAt: '2025-04-07T22:37:22.216Z',
-						updatedAt: '2025-04-07T22:37:22.216Z',
 					},
 					{
 						id: 44,
@@ -626,69 +784,158 @@ async function main() {
 						options: [],
 						partialAnswer: ['Sie', 'um 8 Uhr an'],
 						order: 1,
-						createdAt: '2025-04-07T22:37:27.245Z',
-						updatedAt: '2025-04-07T22:37:27.245Z',
 					},
-					// SECTION Präsens EN GE
+					// SECTION Présent RU FR
 					{
 						id: 45,
 						levelId: 26,
+						type: 'WORD_PICKER',
+						question: 'Я говорю по-французски',
+						correctAnswer: 'Je parle français',
+						options: ['Je', 'parle', 'français'],
+						partialAnswer: [],
+						order: 1,
+					},
+					{
+						id: 46,
+						levelId: 26,
+						type: 'TEXT_INPUT',
+						question: 'Мы живём в Париже',
+						correctAnswer: 'Nous habitons à Paris',
+						options: [],
+						partialAnswer: ['Nous', 'à Paris'],
+						order: 2,
+					},
+					{
+						id: 47,
+						levelId: 27,
+						type: 'WORD_PICKER',
+						question: 'Ты работаешь в школе',
+						correctAnswer: "Tu travailles à l'école",
+						options: ['Tu', 'travailles', 'à', "l'école"],
+						partialAnswer: [],
+						order: 1,
+					},
+					{
+						id: 48,
+						levelId: 27,
+						type: 'TEXT_INPUT',
+						question: 'Она читает книгу',
+						correctAnswer: 'Elle lit un livre',
+						options: [],
+						partialAnswer: ['Elle', 'un livre'],
+						order: 2,
+					},
+					{
+						id: 49,
+						levelId: 28,
+						type: 'WORD_PICKER',
+						question: 'Я не понимаю',
+						correctAnswer: 'Je ne comprends pas',
+						options: ['Je', 'ne', 'comprends', 'pas'],
+						partialAnswer: [],
+						order: 1,
+					},
+					{
+						id: 50,
+						levelId: 28,
+						type: 'TEXT_INPUT',
+						question: 'Вы не говорите по-английски',
+						correctAnswer: 'Vous ne parlez pas anglais',
+						options: [],
+						partialAnswer: ['Vous', 'pas anglais'],
+						order: 2,
+					},
+					{
+						id: 51,
+						levelId: 29,
+						type: 'WORD_PICKER',
+						question: 'Где ты живёшь?',
+						correctAnswer: 'Où habites-tu?',
+						options: ['Où', 'habites-tu?'],
+						partialAnswer: [],
+						order: 1,
+					},
+					{
+						id: 52,
+						levelId: 29,
+						type: 'TEXT_INPUT',
+						question: 'Что ты делаешь?',
+						correctAnswer: "Qu'est-ce que tu fais?",
+						options: [],
+						partialAnswer: ["Qu'est-ce que", 'tu fais?'],
+						order: 2,
+					},
+					{
+						id: 53,
+						levelId: 30,
+						type: 'WORD_PICKER',
+						question: 'Мне нравится французская кухня',
+						correctAnswer: "J'aime la cuisine française",
+						options: ["J'aime", 'la', 'cuisine', 'française'],
+						partialAnswer: [],
+						order: 1,
+					},
+					{
+						id: 54,
+						levelId: 30,
+						type: 'TEXT_INPUT',
+						question: 'Они учатся в университете',
+						correctAnswer: "Ils étudient à l'université",
+						options: [],
+						partialAnswer: ['Ils', "à l'université"],
+						order: 2,
+					},
+					// SECTION Präsens EN GE
+					{
+						id: 55,
+						levelId: 31,
 						type: 'WORD_PICKER',
 						question: 'I learn German quickly',
 						correctAnswer: 'Ich lerne schnell Deutsch',
 						options: ['schnell', 'Ich', 'Deutsch', 'lerne'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:38:05.700Z',
-						updatedAt: '2025-04-09T17:52:20.580Z',
 					},
 					{
-						id: 46,
-						levelId: 27,
+						id: 56,
+						levelId: 32,
 						type: 'TEXT_INPUT',
 						question: 'We live near the station',
 						correctAnswer: 'Wir wohnen nahe dem Bahnhof',
 						options: [],
 						partialAnswer: ['Wir', 'nahe dem Bahnhof'],
 						order: 1,
-						createdAt: '2025-04-07T22:38:12.927Z',
-						updatedAt: '2025-04-07T22:38:12.927Z',
 					},
 					{
-						id: 47,
-						levelId: 28,
+						id: 57,
+						levelId: 33,
 						type: 'WORD_PICKER',
 						question: 'She drinks tea with milk',
 						correctAnswer: 'Sie trinkt Tee mit Milch',
 						options: ['Sie', 'Milch', 'Tee', 'mit', 'trinkt'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:38:16.615Z',
-						updatedAt: '2025-04-07T22:38:16.615Z',
 					},
 					{
-						id: 48,
-						levelId: 29,
+						id: 58,
+						levelId: 34,
 						type: 'TEXT_INPUT',
-						question: 'You (singular) speak very clearly',
+						question: 'You speak very clearly',
 						correctAnswer: 'Du sprichst sehr deutlich',
 						options: [],
 						partialAnswer: ['Du', 'sehr deutlich'],
 						order: 1,
-						createdAt: '2025-04-07T22:38:20.851Z',
-						updatedAt: '2025-04-07T22:38:20.851Z',
 					},
 					{
-						id: 49,
-						levelId: 30,
+						id: 59,
+						levelId: 35,
 						type: 'WORD_PICKER',
 						question: 'I learn German quickly',
 						correctAnswer: 'Ich lerne schnell Deutsch',
-						options: ['Ich', 'lerne', 'schnell', 'Deutsch'],
+						options: ['Deutsch', 'schnell', 'lerne', 'Ich'],
 						partialAnswer: [],
 						order: 1,
-						createdAt: '2025-04-07T22:37:35.073Z',
-						updatedAt: '2025-04-07T22:37:35.073Z',
 					},
 				],
 			})
