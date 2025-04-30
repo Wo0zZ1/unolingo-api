@@ -39,20 +39,19 @@ export class AuthService {
 		const payload: IUserJwtPayload = { id: user.id, username: user.username }
 
 		const accessToken = await this.jwtService.signAsync(payload, {
-			expiresIn: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
+			expiresIn: 1000 * this.configService.getOrThrow<number>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
 			secret: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_SECRET'),
 		})
 
 		const refreshToken = await this.jwtService.signAsync(payload, {
-			expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+			expiresIn: 1000 * this.configService.getOrThrow<number>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
 			secret: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_SECRET'),
 		})
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
 			sameSite: 'strict',
-			// TODO SET TO ENV
-			maxAge: 5 * 60 * 1000, // 5 min
+			maxAge: 1000 * this.configService.getOrThrow<number>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
 		})
 
 		return { accessToken }
@@ -70,7 +69,7 @@ export class AuthService {
 					username: paylaod.username,
 				},
 				{
-					expiresIn: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+					expiresIn: 1000 * this.configService.getOrThrow<number>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
 					secret: this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_SECRET'),
 				},
 			)
@@ -78,8 +77,7 @@ export class AuthService {
 			res.cookie('refreshToken', newRefreshToken, {
 				httpOnly: true,
 				sameSite: 'strict',
-				// TODO SET TO ENV
-				maxAge: 5 * 60 * 1000, // 5 min
+				maxAge: 1000 * this.configService.getOrThrow<number>('JWT_REFRESH_TOKEN_EXPIRES_IN'),
 			})
 
 			const accessToken = await this.jwtService.signAsync(
@@ -88,7 +86,7 @@ export class AuthService {
 					username: paylaod.username,
 				},
 				{
-					expiresIn: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
+					expiresIn: 1000 * this.configService.getOrThrow<number>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
 					secret: this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN_SECRET'),
 				},
 			)
