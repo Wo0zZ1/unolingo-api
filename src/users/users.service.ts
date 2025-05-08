@@ -98,14 +98,8 @@ export class UsersService {
 		}
 	}
 
-	async getUserByUsername(username: string): Promise<User> {
-		try {
-			return await this.prisma.user.findUniqueOrThrow({ where: { username } })
-		} catch (error) {
-			if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025')
-				throw new NotFoundException()
-			throw error
-		}
+	async getUserByUsername(username: string): Promise<User | null> {
+		return await this.prisma.user.findUnique({ where: { username } })
 	}
 
 	async updateUserById(id: number, updateUserDto: UpdateUserDto): Promise<Omit<User, 'password'>> {

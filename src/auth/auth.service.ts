@@ -27,6 +27,7 @@ export class AuthService {
 
 	async validateUser(username: string, pass: string): Promise<Omit<User, 'password'>> {
 		const user = await this.usersService.getUserByUsername(username)
+		if (!user) throw new UnauthorizedException()
 		const isMatch = await bcrypt.compare(pass, user.password)
 		if (!isMatch) throw new UnauthorizedException()
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
